@@ -1,6 +1,6 @@
 'use strict';
 
-const getExtension = require('./getJscodeshiftExtension');
+const getExtension = require('../getJscodeshiftExtension');
 const { replacePropAndValues } = require('./utils');
 
 module.exports = function(file, api) {
