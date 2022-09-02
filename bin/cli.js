@@ -355,7 +355,7 @@ function run() {
       return runTransform({
         files: filesExpanded,
         flags: cli.flags,
-        parser: selectedParser,
+        // parser: selectedParser,
         transformer: selectedTransformer,
         answers: answers,
       });
