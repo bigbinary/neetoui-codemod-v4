@@ -14,7 +14,7 @@ module.exports = function(file, api) {
     value: 'large',
   });
   removeProp(ast, j, {
-    component: 'Button',
+    component: 'Select',
     prop: 'size',
     value: 'small',
   });
