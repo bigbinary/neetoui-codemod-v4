@@ -1,8 +1,8 @@
-"use strict";
+'use strict';
 
-const getExtension = require("../getJscodeshiftExtension");
+const getExtension = require('../getJscodeshiftExtension');
 
-module.exports = function (file, api) {
+module.exports = function(file, api) {
   const j = api.jscodeshift;
   j.registerMethods(getExtension(j));
   const ast = j(file.source);
@@ -10,16 +10,16 @@ module.exports = function (file, api) {
   ast
     .find(j.JSXOpeningElement, {
       name: {
-        type: "JSXIdentifier",
-        name: "Button",
+        type: 'JSXIdentifier',
+        name: 'Button',
       },
     })
     .map((nodePath) => {
-      let attributes = j(nodePath.get("attributes"));
+      let attributes = j(nodePath.get('attributes'));
       const attrResults = attributes.children(j.JSXAttribute, {
         name: {
-          type: "JSXIdentifier",
-          name: "size",
+          type: 'JSXIdentifier',
+          name: 'size',
         },
       });
 
@@ -27,7 +27,7 @@ module.exports = function (file, api) {
         attributes
           .get(0)
           .insertBefore(
-            j.jsxAttribute(j.jsxIdentifier("size"), j.stringLiteral("large"))
+            j.jsxAttribute(j.jsxIdentifier('size'), j.stringLiteral('large'))
           );
       }
       return nodePath;

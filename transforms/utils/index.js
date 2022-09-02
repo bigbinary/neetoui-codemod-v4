@@ -1,30 +1,30 @@
 const replacePropAndValues = (root, j, { component, prop, values = null }) => {
-  let fromProp = "";
-  let toProp = "";
+  let fromProp = '';
+  let toProp = '';
 
-  if (typeof prop === "object") {
+  if (typeof prop === 'object') {
     fromProp = prop.from;
     toProp = prop.to;
-  } else if (typeof prop === "string") {
+  } else if (typeof prop === 'string') {
     fromProp = prop;
   }
   root
     .find(j.JSXOpeningElement, {
       name: {
-        type: "JSXIdentifier",
+        type: 'JSXIdentifier',
         name: component,
       },
     })
-    .map((nodePath) => nodePath.get("attributes"))
+    .map((nodePath) => nodePath.get('attributes'))
     .children(j.JSXAttribute, {
       name: {
-        type: "JSXIdentifier",
+        type: 'JSXIdentifier',
         name: fromProp,
       },
     })
     .map((nodePath) => {
-      const nodeValue = nodePath.get("value");
-      const nodeProp = nodePath.get("name");
+      const nodeValue = nodePath.get('value');
+      const nodeProp = nodePath.get('name');
       if (values && values.length) {
         values.forEach((value) => {
           if (nodeValue.value.value === value.from) {
@@ -32,7 +32,7 @@ const replacePropAndValues = (root, j, { component, prop, values = null }) => {
           }
         });
       }
-      if (toProp) j(nodeProp).replaceWith(toProp);
+      if (toProp) {j(nodeProp).replaceWith(toProp);}
 
       return nodePath;
     });
@@ -42,15 +42,15 @@ const addPropAndValue = (root, j, { component, prop, value }) => {
   root
     .find(j.JSXOpeningElement, {
       name: {
-        type: "JSXIdentifier",
+        type: 'JSXIdentifier',
         name: component,
       },
     })
     .map((nodePath) => {
-      let attributes = j(nodePath.get("attributes"));
+      let attributes = j(nodePath.get('attributes'));
       const attrResults = attributes.children(j.JSXAttribute, {
         name: {
-          type: "JSXIdentifier",
+          type: 'JSXIdentifier',
           name: prop,
         },
       });
@@ -70,19 +70,19 @@ const removeProp = (root, j, { component, prop, value }) => {
   root
     .find(j.JSXOpeningElement, {
       name: {
-        type: "JSXIdentifier",
+        type: 'JSXIdentifier',
         name: component,
       },
     })
-    .map((nodePath) => nodePath.get("attributes"))
+    .map((nodePath) => nodePath.get('attributes'))
     .children(j.JSXAttribute, {
       name: {
-        type: "JSXIdentifier",
+        type: 'JSXIdentifier',
         name: prop,
       },
     })
     .filter((nodePath) => {
-      const nodeValue = nodePath.get("value");
+      const nodeValue = nodePath.get('value');
       return nodeValue.value.value === value;
     })
     .replaceWith();

@@ -1,22 +1,22 @@
-const globby = require("globby");
-const inquirer = require("inquirer");
-const meow = require("meow");
-const path = require("path");
-const execa = require("execa");
-const chalk = require("chalk");
-const isGitClean = require("is-git-clean");
+const globby = require('globby');
+const inquirer = require('inquirer');
+const meow = require('meow');
+const path = require('path');
+const execa = require('execa');
+const chalk = require('chalk');
+const isGitClean = require('is-git-clean');
 
-const transformerDirectory = path.join(__dirname, "../", "transforms");
-const jscodeshiftExecutable = require.resolve(".bin/jscodeshift");
+const transformerDirectory = path.join(__dirname, '../', 'transforms');
+const jscodeshiftExecutable = require.resolve('.bin/jscodeshift');
 
 function checkGitStatus(force) {
   let clean = false;
-  let errorMessage = "Unable to determine if git directory is clean";
+  let errorMessage = 'Unable to determine if git directory is clean';
   try {
     clean = isGitClean.sync(process.cwd());
-    errorMessage = "Git directory is not clean";
+    errorMessage = 'Git directory is not clean';
   } catch (err) {
-    if (err && err.stderr && err.stderr.indexOf("Not a git repository") >= 0) {
+    if (err && err.stderr && err.stderr.indexOf('Not a git repository') >= 0) {
       clean = true;
     }
   }
@@ -25,14 +25,14 @@ function checkGitStatus(force) {
     if (force) {
       console.log(`WARNING: ${errorMessage}. Forcibly continuing.`);
     } else {
-      console.log("Thank you for using react-codemods!");
+      console.log('Thank you for using react-codemods!');
       console.log(
         chalk.yellow(
-          "\nBut before we continue, please stash or commit your git changes."
+          '\nBut before we continue, please stash or commit your git changes.'
         )
       );
       console.log(
-        "\nYou may use the --force flag to override this safety check."
+        '\nYou may use the --force flag to override this safety check.'
       );
       process.exit(1);
     }
@@ -47,51 +47,51 @@ function runTransform({ files, flags, parser, transformer, answers }) {
   const { dry, print, explicitRequire } = flags;
 
   if (dry) {
-    args.push("--dry");
+    args.push('--dry');
   }
   if (print) {
-    args.push("--print");
+    args.push('--print');
   }
 
-  if (explicitRequire === "false") {
-    args.push("--explicit-require=false");
+  if (explicitRequire === 'false') {
+    args.push('--explicit-require=false');
   }
 
-  args.push("--verbose=2");
+  args.push('--verbose=2');
 
-  args.push("--ignore-pattern=**/node_modules/**");
+  args.push('--ignore-pattern=**/node_modules/**');
 
-  args.push("--parser", parser);
+  args.push('--parser', parser);
 
-  if (parser === "tsx") {
-    args.push("--extensions=tsx,ts,jsx,js");
+  if (parser === 'tsx') {
+    args.push('--extensions=tsx,ts,jsx,js');
   } else {
-    args.push("--extensions=jsx,js");
+    args.push('--extensions=jsx,js');
   }
 
-  args = args.concat(["--transform", transformerPath]);
+  args = args.concat(['--transform', transformerPath]);
 
-  if (transformer === "class") {
-    args.push("--flow=" + answers.classFlow);
-    args.push("--remove-runtime-props=" + answers.classRemoveRuntimePropTypes);
-    args.push("--pure-component=" + answers.classPureComponent);
-    args.push("--mixin-module-name=" + answers.classMixinModuleName);
+  if (transformer === 'class') {
+    args.push('--flow=' + answers.classFlow);
+    args.push('--remove-runtime-props=' + answers.classRemoveRuntimePropTypes);
+    args.push('--pure-component=' + answers.classPureComponent);
+    args.push('--mixin-module-name=' + answers.classMixinModuleName);
   }
-  if (transformer === "pure-render-mixin") {
-    args.push("--mixin-name=" + answers.pureRenderMixinMixinName);
+  if (transformer === 'pure-render-mixin') {
+    args.push('--mixin-name=' + answers.pureRenderMixinMixinName);
   }
-  if (transformer === "pure-component") {
+  if (transformer === 'pure-component') {
     if (answers.pureComponentUseArrows) {
-      args.push("--useArrows=true");
+      args.push('--useArrows=true');
     }
     if (answers.pureComponentDestructuring) {
-      args.push("--destructuring=true");
+      args.push('--destructuring=true');
     }
   }
 
-  if (transformer === "update-react-imports") {
+  if (transformer === 'update-react-imports') {
     if (answers.destructureNamespaceImports) {
-      args.push("--destructureNamespaceImports=true");
+      args.push('--destructureNamespaceImports=true');
     }
   }
 
@@ -101,10 +101,10 @@ function runTransform({ files, flags, parser, transformer, answers }) {
 
   args = args.concat(files);
 
-  console.log(`Executing command: jscodeshift ${args.join(" ")}`);
+  console.log(`Executing command: jscodeshift ${args.join(' ')}`);
 
   const result = execa.sync(jscodeshiftExecutable, args, {
-    stdio: "inherit",
+    stdio: 'inherit',
     stripEof: false,
   });
 
@@ -115,57 +115,57 @@ function runTransform({ files, flags, parser, transformer, answers }) {
 
 const TRANSFORMER_INQUIRER_CHOICES = [
   {
-    name: "Button",
-    value: "Button",
+    name: 'Button',
+    value: 'Button',
   },
   {
-    name: "Select",
-    value: "Select",
+    name: 'Select',
+    value: 'Select',
   },
   {
-    name: "Avatar",
-    value: "Avatar",
+    name: 'Avatar',
+    value: 'Avatar',
   },
   {
-    name: "Modal",
-    value: "Modal",
+    name: 'Modal',
+    value: 'Modal',
   },
   {
-    name: "Alert",
-    value: "Alert",
+    name: 'Alert',
+    value: 'Alert',
   },
   {
-    name: "Pane",
-    value: "Pane",
+    name: 'Pane',
+    value: 'Pane',
   },
   {
-    name: "Dropdown",
-    value: "Dropdown",
+    name: 'Dropdown',
+    value: 'Dropdown',
   },
   {
-    name: "Tag",
-    value: "Tag",
+    name: 'Tag',
+    value: 'Tag',
   },
 ];
 
 const PARSER_INQUIRER_CHOICES = [
   {
-    name: "JavaScript",
-    value: "babel",
+    name: 'JavaScript',
+    value: 'babel',
   },
   {
-    name: "JavaScript with Flow",
-    value: "flow",
+    name: 'JavaScript with Flow',
+    value: 'flow',
   },
   {
-    name: "TypeScript",
-    value: "tsx",
+    name: 'TypeScript',
+    value: 'tsx',
   },
 ];
 
 function expandFilePathsIfNeeded(filesBeforeExpansion) {
   const shouldExpandFiles = filesBeforeExpansion.some((file) =>
-    file.includes("*")
+    file.includes('*')
   );
   return shouldExpandFiles
     ? globby.sync(filesBeforeExpansion)
@@ -175,7 +175,7 @@ function expandFilePathsIfNeeded(filesBeforeExpansion) {
 function run() {
   const cli = meow(
     {
-      description: "Codemods for updating React APIs.",
+      description: 'Codemods for updating React APIs.',
       help: `
     Usage
       $ npx react-codemod <transform> <path> <...options>
@@ -193,10 +193,10 @@ function run() {
     `,
     },
     {
-      boolean: ["force", "dry", "print", "explicit-require", "help"],
-      string: ["_"],
+      boolean: ['force', 'dry', 'print', 'explicit-require', 'help'],
+      string: ['_'],
       alias: {
-        h: "help",
+        h: 'help',
       },
     }
   );
@@ -219,120 +219,120 @@ function run() {
   inquirer
     .prompt([
       {
-        type: "input",
-        name: "files",
-        message: "On which files or directory should the codemods be applied?",
+        type: 'input',
+        name: 'files',
+        message: 'On which files or directory should the codemods be applied?',
         when: !cli.input[1],
-        default: ".",
+        default: '.',
         // validate: () =>
         filter: (files) => files.trim(),
       },
       {
-        type: "list",
-        name: "parser",
-        message: "Which dialect of JavaScript do you use?",
-        default: "babel",
+        type: 'list',
+        name: 'parser',
+        message: 'Which dialect of JavaScript do you use?',
+        default: 'babel',
         when: !cli.flags.parser,
         pageSize: PARSER_INQUIRER_CHOICES.length,
         choices: PARSER_INQUIRER_CHOICES,
       },
       {
-        type: "list",
-        name: "transformer",
-        message: "Which transform would you like to apply?",
+        type: 'list',
+        name: 'transformer',
+        message: 'Which transform would you like to apply?',
         when: !cli.input[0],
         pageSize: TRANSFORMER_INQUIRER_CHOICES.length,
         choices: TRANSFORMER_INQUIRER_CHOICES,
       },
       // if transformer === 'class'
       {
-        type: "confirm",
-        name: "classFlow",
+        type: 'confirm',
+        name: 'classFlow',
         when: (answers) => {
-          return cli.input[0] === "class" || answers.transformer === "class";
+          return cli.input[0] === 'class' || answers.transformer === 'class';
         },
-        message: "Generate Flow annotations from propTypes?",
+        message: 'Generate Flow annotations from propTypes?',
         default: true,
       },
       {
-        type: "confirm",
-        name: "classRemoveRuntimePropTypes",
+        type: 'confirm',
+        name: 'classRemoveRuntimePropTypes',
         when: (answers) => {
           return answers.classFlow === true;
         },
-        message: "Remove runtime PropTypes?",
+        message: 'Remove runtime PropTypes?',
         default: false,
       },
       {
-        type: "confirm",
-        name: "classPureComponent",
+        type: 'confirm',
+        name: 'classPureComponent',
         when: (answers) => {
-          return cli.input[0] === "class" || answers.transformer === "class";
+          return cli.input[0] === 'class' || answers.transformer === 'class';
         },
         message:
-          "replace react-addons-pure-render-mixin with React.PureComponent?",
+          'replace react-addons-pure-render-mixin with React.PureComponent?',
         default: true,
       },
       {
-        type: "input",
-        name: "classMixinModuleName",
+        type: 'input',
+        name: 'classMixinModuleName',
         when: (answers) => {
           return answers.classPureComponent === true;
         },
         // validate: () =>
-        message: "What module exports this mixin?",
-        default: "react-addons-pure-render-mixin",
+        message: 'What module exports this mixin?',
+        default: 'react-addons-pure-render-mixin',
         filter: (x) => x.trim(),
       },
       // if transformer === 'pure-render-mixin'
       {
-        type: "input",
-        name: "pureRenderMixinMixinName",
+        type: 'input',
+        name: 'pureRenderMixinMixinName',
         when: (answers) => {
           return (
-            cli.input[0] === "pure-render-mixin" ||
-            answers.transformer === "pure-render-mixin"
+            cli.input[0] === 'pure-render-mixin' ||
+            answers.transformer === 'pure-render-mixin'
           );
         },
-        message: "What is the name of the mixin?",
-        default: "PureRenderMixin",
+        message: 'What is the name of the mixin?',
+        default: 'PureRenderMixin',
         filter: (x) => x.trim(),
       },
       // if transformer === 'pure-component'
       {
-        type: "confirm",
-        name: "pureComponentUseArrows",
+        type: 'confirm',
+        name: 'pureComponentUseArrows',
         when: (answers) => {
           return (
-            cli.input[0] === "pure-component" ||
-            answers.transformer === "pure-component"
+            cli.input[0] === 'pure-component' ||
+            answers.transformer === 'pure-component'
           );
         },
-        message: "Use arrow functions?",
+        message: 'Use arrow functions?',
         default: false,
       },
       {
-        type: "confirm",
-        name: "pureComponentDestructuring",
+        type: 'confirm',
+        name: 'pureComponentDestructuring',
         when: (answers) => {
           return (
-            cli.input[0] === "pure-component" ||
-            answers.transformer === "pure-component"
+            cli.input[0] === 'pure-component' ||
+            answers.transformer === 'pure-component'
           );
         },
-        message: "Destructure props?",
+        message: 'Destructure props?',
         default: false,
       },
       {
-        type: "confirm",
-        name: "destructureNamespaceImports",
+        type: 'confirm',
+        name: 'destructureNamespaceImports',
         when: (answers) => {
           return (
-            cli.input[0] === "update-react-imports" ||
-            answers.transformer === "update-react-imports"
+            cli.input[0] === 'update-react-imports' ||
+            answers.transformer === 'update-react-imports'
           );
         },
-        message: "Destructure namespace imports (import *) too?",
+        message: 'Destructure namespace imports (import *) too?',
         default: false,
       },
     ])
@@ -347,7 +347,7 @@ function run() {
 
       if (!filesExpanded.length) {
         console.log(
-          `No files found matching ${filesBeforeExpansion.join(" ")}`
+          `No files found matching ${filesBeforeExpansion.join(' ')}`
         );
         return null;
       }

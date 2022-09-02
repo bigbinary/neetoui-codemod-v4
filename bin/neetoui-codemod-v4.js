@@ -1,1 +1,2 @@
-require("./cli").run();
+#! /usr/bin/env node
+require('./cli').run();
