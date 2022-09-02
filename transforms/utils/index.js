@@ -32,7 +32,9 @@ const replacePropAndValues = (root, j, { component, prop, values = null }) => {
           }
         });
       }
-      if (toProp) {j(nodeProp).replaceWith(toProp);}
+      if (toProp) {
+        j(nodeProp).replaceWith(toProp);
+      }
 
       return nodePath;
     });
@@ -88,8 +90,17 @@ const removeProp = (root, j, { component, prop, value }) => {
     .replaceWith();
 };
 
+const replaceString = (root, values) => {
+  values.forEach((value) => {
+    root = root.replace(value.from, value.to);
+  });
+
+  return root;
+};
+
 module.exports = {
   replacePropAndValues,
   addPropAndValue,
   removeProp,
+  replaceString,
 };
