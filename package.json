@@ -1,7 +1,9 @@
 {
-  "name": "neetoui-codemod-v4",
+  "name": "@bigbinary/neetoui-codemod-v4",
   "version": "1.0.0",
   "description": "neetoUI v4 codemod scripts",
+  "author": "BigBinary",
+  "license": "MIT",
   "scripts": {
     "test": "jest",
     "lint": "eslint .",
