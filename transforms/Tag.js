@@ -21,7 +21,7 @@ module.exports = function(file, api) {
       { from: 'blue', to: 'primary' },
       { from: 'green', to: 'success' },
       { from: 'yellow', to: 'warning' },
-      { from: 'gray', to: 'inactive' },
+      { from: 'gray', to: 'secondary' },
     ],
   });
 
@@ -33,7 +33,7 @@ module.exports = function(file, api) {
       { from: 'blue', to: 'primary' },
       { from: 'green', to: 'success' },
       { from: 'yellow', to: 'warning' },
-      { from: 'gray', to: 'inactive' },
+      { from: 'gray', to: 'secondary' },
     ],
   });
 
