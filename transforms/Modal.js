@@ -12,9 +12,9 @@ module.exports = function(file, api) {
     component: 'Modal',
     prop: 'size',
     values: [
-      { from: 'sm', to: 'small' },
-      { from: 'md', to: 'medium' },
-      { from: 'lg', to: 'large' },
+      { from: 'xs', to: 'small' },
+      { from: 'sm', to: 'medium' },
+      { from: 'md', to: 'large' },
     ],
   });
 
