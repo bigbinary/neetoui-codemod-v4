@@ -19,6 +19,7 @@ const transformers = [
   "Alert",
   "Tag",
   "Classnames",
+  "CSSVariables",
 ];
 
 // const TRANSFORMER_INQUIRER_CHOICES = [
@@ -181,11 +182,19 @@ function run() {
     return null;
   }
 
-  for (const transformer of transformers) {
+  if (!cli.input[1]) {
+    for (const transformer of transformers) {
+      runTransform({
+        files: filesExpanded,
+        flags: cli.flags,
+        transformer: transformer,
+      });
+    }
+  } else {
     runTransform({
       files: filesExpanded,
       flags: cli.flags,
-      transformer: transformer,
+      transformer: cli.input[1],
     });
   }
 }
