@@ -110,7 +110,12 @@ function runTransform({ files, flags, transformer }) {
   args.push("--ignore-pattern=**/node_modules/**");
 
   args.push("--parser", "babel");
-  args.push("--extensions=jsx,js,scss");
+
+  if (transformer === "CSSVariables") {
+    args.push("--extensions=scss");
+  } else {
+    args.push("--extensions=jsx,js");
+  }
 
   args = args.concat(["--transform", transformerPath]);
 
